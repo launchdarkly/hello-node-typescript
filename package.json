@@ -16,6 +16,6 @@
     "typescript": "2.4.1"
   },
   "dependencies": {
-    "ldclient-node": "3.0.14"
+    "launchdarkly-node-server-sdk": "5.8.1"
   }
 }

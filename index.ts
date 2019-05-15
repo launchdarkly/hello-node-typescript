@@ -1,4 +1,4 @@
-import * as LaunchDarkly from 'ldclient-node';
+import * as LaunchDarkly from 'launchdarkly-node-server-sdk';
 
 // TODO : Enter your LaunchDarkly SDK key here
 const client = LaunchDarkly.init("YOUR_SDK_KEY");
