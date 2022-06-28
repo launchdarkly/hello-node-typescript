@@ -1,15 +1,18 @@
 import * as LaunchDarkly from 'launchdarkly-node-server-sdk';
 
-// TODO : Enter your LaunchDarkly SDK key here
-const client = LaunchDarkly.init("YOUR_SDK_KEY");
+// Set sdkKey to your LaunchDarkly SDK key.
+const sdkKey = "";
 
+// Set featureFlagKey to the feature flag key you want to evaluate.
+const featureFlagKey = "my-boolean-flag";
+
+const client = LaunchDarkly.init(sdkKey);
+
+// Set up the user properties. This use should appear on your LaunchDarkly
+// users dashboard soon after you run the demo.
 const user = {
-   "firstName":"Bob",
-   "lastName":"Loblaw",
-   "key":"louise@example.com",
-   "custom":{
-      "groups":"beta_testers"
-   }
+   "name": "Sandy",
+   "key": "example-user-key"
 };
 
 client.once('ready', function() {
