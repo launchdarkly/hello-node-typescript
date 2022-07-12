@@ -4,14 +4,12 @@
   "description": "Hello LaunchDarkly for Node.js with TypeScript",
   "main": "index.ts",
   "scripts": {
-    "start": "npm run build:live",
-    "build:live": "nodemon --exec ./node_modules/.bin/ts-node -- ./index.ts"
+    "start": "ts-node ./index.ts"
   },
   "author": "LaunchDarkly <team@launchdarkly.com>",
   "license": "Apache-2.0",
   "devDependencies": {
     "@types/node": "8.0.4",
-    "nodemon": "1.11.0",
     "ts-node": "3.1.0",
     "typescript": "2.4.1"
   },
