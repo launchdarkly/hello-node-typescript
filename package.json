@@ -14,6 +14,6 @@
     "typescript": "2.4.1"
   },
   "dependencies": {
-    "launchdarkly-node-server-sdk": "5.8.1"
+    "@launchdarkly/node-server-sdk": ">= 8.0.0"
   }
 }
