@@ -1,45 +1,71 @@
 import * as LaunchDarkly from '@launchdarkly/node-server-sdk';
 
 // Set sdkKey to your LaunchDarkly SDK key.
-const sdkKey = "";
+const sdkKey = process.env.LAUNCHDARKLY_SDK_KEY ?? 'your-sdk-key';
 
 // Set featureFlagKey to the feature flag key you want to evaluate.
-const featureFlagKey = "my-boolean-flag";
+const featureFlagKey = process.env.LAUNCHDARKLY_FLAG_KEY ?? 'sample-feature';
 
-// Set up the context properties. This use should appear on your LaunchDarkly
-// contexts dashboard soon after you run the demo.
-const context = {
-  "kind": "user",
-  "name": "Sandy",
-  "key": "example-context-key"
-};
-
-function showMessage(s: string) {
-  console.log("*** " + s);
-  console.log("");
+function showBanner() {
+  console.log(
+    `        ██
+          ██
+      ████████
+         ███████
+██ LAUNCHDARKLY █
+         ███████
+      ████████
+          ██
+        ██
+`,
+  );
 }
 
-const client = LaunchDarkly.init(sdkKey);
+function printValueAndBanner(flagValue: boolean) {
+  console.log(`*** The '${featureFlagKey}' feature flag evaluates to ${flagValue}.`);
 
-client.once('ready', function () {
-  showMessage("SDK successfully initialized!");
-  client.variation(featureFlagKey, context, false, function (err, showFeature) {
-    client.track("event-called", context);
-    if (showFeature) {
-      // application code to show the feature
-      showMessage("Feature flag '" + featureFlagKey + "' is true for this context");
-    } else {
-      // the code to run if the feature is off
-      showMessage("Feature flag '" + featureFlagKey + "' is false for this context");
-    }
+  if (flagValue) showBanner();
+}
 
-    // Here we ensure that the SDK shuts down cleanly and has a chance to deliver analytics
-    // events to LaunchDarkly before the program exits. If analytics events are not delivered,
-    // the context properties and flag usage statistics will not appear on your dashboard. In a
-    // normal long-running application, the SDK would continue running and events would be
-    // delivered automatically in the background.
-    client.flush(function () {
-      client.close();
+if (!sdkKey) {
+  console.log('*** Please edit index.js to set sdkKey to your LaunchDarkly SDK key first.');
+  process.exit(1);
+}
+
+
+const ldClient = LaunchDarkly.init(sdkKey);
+
+// Set up the context properties. This context should appear on your LaunchDarkly contexts dashboard
+// soon after you run the demo.
+const context = {
+  kind: 'user',
+  key: 'example-user-key',
+  name: 'Sandy',
+};
+
+async function main() {
+  try {
+    await ldClient.waitForInitialization({timeout: 10});
+
+    console.log('*** SDK successfully initialized!');
+
+    const eventKey = `update:${featureFlagKey}`;
+    ldClient.on(eventKey, async () => {
+      const flagValue = await ldClient.variation(featureFlagKey, context, false);
+      printValueAndBanner(flagValue);
     });
-  });
-});
+
+    const flagValue = await ldClient.variation(featureFlagKey, context, false);
+    printValueAndBanner(flagValue);
+
+    if (typeof process.env.CI !== "undefined") {
+      process.exit(0);
+    }
+  } catch (error) {
+    console.log(`*** SDK failed to initialize: ${error}`);
+    process.exit(1);
+  }
+
+}
+
+main();
