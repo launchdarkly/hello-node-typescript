@@ -27,8 +27,8 @@ function printValueAndBanner(flagValue: boolean) {
   if (flagValue) showBanner();
 }
 
-if (!sdkKey) {
-  console.log('*** Please edit index.js to set sdkKey to your LaunchDarkly SDK key first.');
+if (sdkKey === 'your-sdk-key' || !sdkKey) {
+  console.log('*** Please specify an SDK key by editing index.ts or setting the LAUNCHDARKLY_SDK_KEY environment variable.');
   process.exit(1);
 }
 
