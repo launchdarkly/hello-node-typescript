@@ -1,4 +1,4 @@
-import * as LaunchDarkly from '@launchdarkly/node-server-sdk';
+import { init } from '@launchdarkly/node-server-sdk';
 
 // Set sdkKey to your LaunchDarkly SDK key.
 const sdkKey = process.env.LAUNCHDARKLY_SDK_KEY ?? 'your-sdk-key';
@@ -33,7 +33,7 @@ if (sdkKey === 'your-sdk-key' || !sdkKey) {
 }
 
 
-const ldClient = LaunchDarkly.init(sdkKey);
+const ldClient = init(sdkKey);
 
 // Set up the context properties. This context should appear on your LaunchDarkly contexts dashboard
 // soon after you run the demo.
