@@ -11,4 +11,5 @@ jobs:
     uses: launchdarkly/common-workflows/.github/workflows/dependency-scan.yml@main
     with:
       types: 'nodejs'
+      runs-on: 'ubuntu-latest'
     secrets: inherit
