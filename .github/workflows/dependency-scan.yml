@@ -7,26 +7,8 @@ on:
       - main
 
 jobs:
-  generate-sbom:
-    runs-on: ${{ github.run_id }}/runner=ubuntu22-2cpu-8gb-x64
-    steps:
-      - uses: runs-on/action@cd2b598b0515d39d78c38a02d529db87d2196d1e # v2.0.3
-      - uses: launchdarkly/common-actions/init@main
-
-      - name: Generate SBOM
-        uses: launchdarkly/common-actions/dependency-scan/generate-sbom@main
-        with:
-          types: 'nodejs'
-
-  evaluate-policy:
-    runs-on: ${{ github.run_id }}/runner=ubuntu22-2cpu-8gb-x64
-    needs:
-      - generate-sbom
-    steps:
-      - uses: runs-on/action@cd2b598b0515d39d78c38a02d529db87d2196d1e # v2.0.3
-      - uses: launchdarkly/common-actions/init@main
-
-      - name: Evaluate SBOM Policy
-        uses: launchdarkly/common-actions/dependency-scan/evaluate-policy@main
-        with:
-          artifacts-pattern: bom-*
+  dependency-scan:
+    uses: launchdarkly/common-workflows/.github/workflows/dependency-scan.yml@main
+    with:
+      types: 'nodejs'
+    secrets: inherit
