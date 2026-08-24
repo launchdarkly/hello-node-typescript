@@ -11,12 +11,13 @@ For a sample application demonstrating how to use LaunchDarkly in *client-side* 
 ## Build instructions
 
 1. Install the LaunchDarkly Node.js SDK by running `npm install`
-2. Edit `index.ts` and set the value of `sdkKey` to your LaunchDarkly SDK key. If there is an existing boolean feature flag in your LaunchDarkly project that you want to evaluate, set `featureFlagKey` to the flag key.
+2. Set the environment variable `LAUNCHDARKLY_SDK_KEY` to your LaunchDarkly SDK key. If there is an existing boolean feature flag in your LaunchDarkly project that you want to evaluate, set `LAUNCHDARKLY_FLAG_KEY` to the flag key; otherwise, a boolean flag of `sample-feature` will be assumed.
 
-```js
-  const sdkKey = "1234567890abcdef";
-
-  const featureFlagKey = "my-flag";
+```bash
+  export LAUNCHDARKLY_SDK_KEY="1234567890abcdef"
+  export LAUNCHDARKLY_FLAG_KEY="my-boolean-flag"
 ```
 
 3. Run `npm start`
+
+You should receive the message "The <flagKey> feature flag evaluates to <flagValue>.". The application will run continuously and react to flag changes in LaunchDarkly.
